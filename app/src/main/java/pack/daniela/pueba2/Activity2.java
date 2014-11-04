@@ -53,14 +53,9 @@ public class Activity2 extends Activity {
         lstOpciones.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
 
-                //Alternativa 1:
                 String opcionSeleccionada =
                         ((Titular)a.getAdapter().getItem(position)).getTitulo();
 
-                //Alternativa 2:
-                //String opcionSeleccionada =
-                //		((TextView)v.findViewById(R.id.LblTitulo))
-                //			.getText().toString();
 
                pulse3.setText("Opción seleccionada: " + opcionSeleccionada);
             }
@@ -70,7 +65,7 @@ public class Activity2 extends Activity {
         {   public void onClick(View arg0) {
                 Intent intent = new Intent(Activity2.this, Activity3.class);
                 startActivity(intent);
-                finish();
+
             }
         });
     }
