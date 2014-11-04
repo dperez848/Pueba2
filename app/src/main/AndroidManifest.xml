@@ -24,6 +24,10 @@
             android:name="pack.daniela.pueba2.Activity3"
             android:label="@string/title_activity_activity3" >
         </activity>
+        <activity
+            android:name="pack.daniela.pueba2.Activity4"
+            android:label="@string/title_activity_activity4" >
+        </activity>
     </application>
 
 </manifest>

@@ -1,12 +1,16 @@
 package pack.daniela.pueba2;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 
@@ -18,7 +22,7 @@ public class Activity3 extends Activity {
         setContentView(R.layout.activity_activity3);
         final TextView pulse4= (TextView)findViewById(R.id.txt1);
         final String[] datos = new String[25];
-
+        ImageButton btn6=(ImageButton)findViewById(R.id.btn6);
         for(int i=1; i<=25; i++)
             datos[i-1] = "Num " + i;
 
@@ -36,6 +40,14 @@ public class Activity3 extends Activity {
                         pulse4.setText("Opción seleccionada: " + datos[position]);
                     }
                 });
+
+        btn6.setOnClickListener(new View.OnClickListener()
+        {   public void onClick(View arg0) {
+                Intent intent = new Intent(Activity3.this, Activity4.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
 

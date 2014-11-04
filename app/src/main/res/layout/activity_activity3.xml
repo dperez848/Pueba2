@@ -13,12 +13,20 @@
 
     <GridView android:id="@+id/GridOpciones"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="450px"
         android:numColumns="5"
         android:layout_below="@id/txt1"
         android:columnWidth="80px"
         android:horizontalSpacing="5dp"
         android:verticalSpacing="10dp"
         android:stretchMode="columnWidth" />
+
+    <ImageButton android:id="@+id/btn6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/icono_uneg"
+        android:src="@drawable/next"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"/>
 
 </RelativeLayout>

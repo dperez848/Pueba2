@@ -92,11 +92,5 @@ public class Activity2 extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(this, Principal.class);
-        startActivity(intent);
-        finish();
-    }
 
 }
