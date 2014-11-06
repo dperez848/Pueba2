@@ -1,13 +1,14 @@
 package pack.daniela.pueba2;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.content.Intent;
-import android.view.View.OnClickListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -64,12 +65,19 @@ public class Principal extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.menu_new:
+                Log.i("ActionBar", "Nuevo!");
+                return true;
+            case R.id.menu_save:
+                Log.i("ActionBar", "Guardar!");;
+                return true;
+            case R.id.action_settings:
+                Log.i("ActionBar", "Settings!");;
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
 

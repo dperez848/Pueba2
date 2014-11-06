@@ -43,6 +43,14 @@ tools:context="pack.daniela.pueba2.Activity4">
                     android:text="Contenido Tab 2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/btn8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn1"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="70dp"/>
             </LinearLayout>
         </FrameLayout>
     </LinearLayout>

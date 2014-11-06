@@ -8,11 +8,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:textSize="40px" />
+        android:textSize="40sp" />
 
     <TextView android:id="@+id/LblSubTitulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="normal"
-        android:textSize="20px" />
+        android:textSize="20sp" />
 </LinearLayout>
