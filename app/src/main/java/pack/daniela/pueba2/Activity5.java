@@ -21,8 +21,9 @@ public class Activity5 extends FragmentActivity {
                     @Override
                     public void onPageSelected(int position) {
                         actionBar = getActionBar();
-                        actionBar.setSelectedNavigationItem(position);                    }
-                });
+                        actionBar.setSelectedNavigationItem(position);
+                    }
+        });
         Tab.setAdapter(TabAdapter);
         actionBar = getActionBar();
         //Enable Tabs on Action Bar
@@ -42,6 +43,7 @@ public class Activity5 extends FragmentActivity {
                                         FragmentTransaction ft) {
                 // TODO Auto-generated method stub
             }};
+
         //Add New Tab
         actionBar.addTab(actionBar.newTab().setText("Tab1").setTabListener(tabListener));
         actionBar.addTab(actionBar.newTab().setText("Tab2").setTabListener(tabListener));
