@@ -5,19 +5,42 @@
     android:orientation="vertical"
     tools:context="pack.daniela.pueba2.Activity7">
 
-    <Button
-        android:id="@+id/show"
+    <EditText android:id="@+id/txt71"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="Titulo del libro"/>
+    <EditText android:id="@+id/txt72"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="Edicion"/>
+
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/listar"
-        android:layout_weight="1"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/cargar"/>
+        <Button
+            android:id="@+id/show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/listar"/>
+
+        </LinearLayout>
 
     <TextView android:id="@+id/results"
         android:text="@string/center"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="6"
+        android:textSize="18dp"
         />
 
 </LinearLayout>

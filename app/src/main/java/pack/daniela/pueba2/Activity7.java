@@ -1,80 +1,59 @@
 package pack.daniela.pueba2;
 
 import android.app.Activity;
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import java.util.List;
+
+import pack.daniela.pueba2.com.entities.models.Bd_Libros;
 
 
 public class Activity7 extends Activity {
-    private ContentValues nuevoRegistro = new ContentValues();
-    private Button show=(Button)findViewById(R.id.show);
-    private TextView txtResultado=(TextView)findViewById(R.id.results);
-    private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity7);
-
-        //Abrimos la base de datos 'DBUsuarios' en modo escritura
-        UsuariosSQLiteHelper usdbh =
-                new UsuariosSQLiteHelper(this, "DBUsuarios", null, 1);
-
-        db = usdbh.getWritableDatabase();
-        //Si hemos abierto correctamente la base de datos
-        if(db != null)
-        {
-            //Insertamos 5 usuarios de ejemplo
-            for(int i=1; i<=5; i++)
-            {
-                //Generamos los datos
-
-                nuevoRegistro.put("codigo", i);
-                nuevoRegistro.put("nombre","Usuario" + i);
-                db.insert("Usuarios", null, nuevoRegistro);
-            }
-            //Establecemos los campos-valores a actualizar
-            ContentValues valores = new ContentValues();
-            valores.put("nombre","usunuevo");
-
-            //Actualizamos el registro en la base de datos
-            db.update("Usuarios", valores, "codigo=2", null);
-
-            //Eliminamos el registro del usuario '6'
-            db.delete("Usuarios", "codigo=3", null);
-
-            //Cerramos la base de datos
-            db.close();
-        }
+        final EditText eTitulo=(EditText)findViewById(R.id.txt71);
+        final EditText eEdicion=(EditText)findViewById(R.id.txt72);
+        final
+        TextView results=(TextView)findViewById(R.id.results);
 
         Button show=(Button)findViewById(R.id.show);
         show.setOnClickListener(new View.OnClickListener()
         {   public void onClick(View arg0)
             {
-                String[] campos = new String[] {"codigo", "nombre"};
-                String[] args = new String[] {"usu1"};
+                Bd_Libros book = new Bd_Libros(eTitulo.getText().toString(), eEdicion.getText().toString());
+                book.save();
+            }
+        });
 
-                Cursor c = db.query("Usuarios", campos, "usuario=?", args, null, null, null);
-                //Recorremos los resultados para mostrarlos en pantalla
-                txtResultado.setText("");
-                //Nos aseguramos de que existe al menos un registro
-                if (c.moveToFirst()) {
-                    //Recorremos el cursor hasta que no haya más registros
+        Button add=(Button)findViewById(R.id.add);
+        show.setOnClickListener(new View.OnClickListener()
+        {   public void onClick(View arg0)
+            {
+                results.setText("");
+                //Bd_Libros book = Bd_Libros.findById(Bd_Libros.class,1);
 
-                    while(c.moveToNext()){
-                        String codigo= c.getString(0);
-                        String nombre = c.getString(1);
-                        txtResultado.append(" " + codigo + " - " + nombre + "\n");
-                    }
 
-                }
+                List<Bd_Libros> books = Bd_Libros.listAll(Bd_Libros.class);
+                /*int i=0;
+                Iterator iter = books.iterator();
+                while (iter.hasNext()){
+                    i++;
+                    results.append(books.get(i).getTitulo() + " " + books.get(i).getEdicion());
+                }*/
+                results.append(books.get(1).getTitulo() + " " + books.get(1).getEdicion());
+
+                     // ArrayList<Bd_Libros> books= new ArrayList<Bd_Libros>();
+                //books = Bd_Libros.listAll(Bd_Libros.class);
+                        //.listAll(Bd_Libros.class);
             }
         });
     }
