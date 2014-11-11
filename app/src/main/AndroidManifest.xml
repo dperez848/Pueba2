@@ -7,7 +7,10 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:name="com.orm.SugarApp">
+        android:name="com.orm.SugarApp"
+       >
+        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="pack.daniela.pueba2" />
+        <meta-data android:name="DATABASE" android:value="prueba2.db" />
         <activity
             android:name="pack.daniela.pueba2.Principal"
             android:label="@string/app_name" >
@@ -46,10 +49,7 @@
             android:label="@string/title_activity_activity8" >
         </activity>
 
-        <meta-data android:name="DATABASE" android:value="pueba2.db" />
-        <meta-data android:name="VERSION" android:value="1" />
-        <meta-data android:name="QUERY_LOG" android:value="true" />
-        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.entities.models" />
+
     </application>
 
 </manifest>

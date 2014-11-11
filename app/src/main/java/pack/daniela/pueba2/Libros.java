@@ -1,19 +1,22 @@
-package pack.daniela.pueba2.com.entities.models;
+package pack.daniela.pueba2;
 
 import com.orm.SugarRecord;
 
-public class Bd_Libros extends SugarRecord<Bd_Libros> {
+public class Libros extends SugarRecord<Libros> {
     String titulo;
     String edicion;
 
-    public Bd_Libros(){
+    public Libros(){
+        super();
     }
 
-    public Bd_Libros(String title, String edition){
+    public Libros(String title, String edition){
+        super();
         this.titulo = title;
         this.edicion = edition;
     }
     public void setTitulo(String titulo) {
+
         this.titulo = titulo;
     }
 
