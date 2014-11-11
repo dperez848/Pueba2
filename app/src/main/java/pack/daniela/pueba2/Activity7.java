@@ -1,19 +1,30 @@
 package pack.daniela.pueba2;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Html;
+import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Activity7 extends Activity {
+
+    private ImageView imgFavorite;
+    private TextView results;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +33,8 @@ public class Activity7 extends Activity {
 
         final EditText eTitulo=(EditText)findViewById(R.id.txt71);
         final EditText eEdicion=(EditText)findViewById(R.id.txt72);
-        final TextView results=(TextView)findViewById(R.id.results);
-
+        results=(TextView)findViewById(R.id.results);
+        imgFavorite = (ImageView)findViewById(R.id.imageView1);
         Button add=(Button)findViewById(R.id.add);
         add.setOnClickListener(new View.OnClickListener()
         {   public void onClick(View arg0)
@@ -50,6 +61,17 @@ public class Activity7 extends Activity {
 
             }
         });
+
+        Button cam=(Button)findViewById(R.id.camera);
+        cam.setOnClickListener(new View.OnClickListener()
+        {   public void onClick(View arg0)
+            {
+                // create Intent to take a picture and return control to the calling application
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                // start the image capture Intent
+                startActivityForResult(intent, 0);
+            }
+        });
     }
 
     @Override
@@ -66,4 +88,21 @@ public class Activity7 extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        Bitmap bp = (Bitmap) data.getExtras().get("data");
+        // - - - Codifica a Base64
+        ByteArrayOutputStream arrayByte = new ByteArrayOutputStream();
+        bp.compress(Bitmap.CompressFormat.PNG, 100, arrayByte);
+        //byte[] byteArray = arrayByte.toByteArray();
+        String encoded = Base64.encodeToString(arrayByte.toByteArray(), Base64.DEFAULT);
+        results.setText(encoded);
+        // - - - Decodiica a bitmap y muestra en Imageview
+        byte[] imageAsBytes = Base64.decode(encoded.getBytes(),Base64.DEFAULT);
+        imgFavorite.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+    }
+
 }
