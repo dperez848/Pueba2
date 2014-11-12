@@ -12,9 +12,9 @@
         <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="pack.daniela.pueba2" />
         <meta-data android:name="DATABASE" android:value="prueba2.db" />
         <uses-permission android:name="android.permission.CAMERA"/>
-        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
         <uses-feature android:name="android.hardware.camera" android:required="false" />
+
+
         <activity
             android:name="pack.daniela.pueba2.Principal"
             android:label="@string/app_name" >
@@ -52,8 +52,11 @@
             android:name="pack.daniela.pueba2.Activity8"
             android:label="@string/title_activity_activity8" >
         </activity>
-
-
+        <provider
+            android:name=".MyFileContentProvider"
+            android:authorities="com.example.camerademo"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>

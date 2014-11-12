@@ -2,12 +2,16 @@ package pack.daniela.pueba2;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,8 +19,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +32,8 @@ public class Activity7 extends Activity {
 
     private ImageView imgFavorite;
     private TextView results;
+    private final int CAMERA_RESULT = 1;
+    private final String Tag = getClass().getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +75,19 @@ public class Activity7 extends Activity {
         cam.setOnClickListener(new View.OnClickListener()
         {   public void onClick(View arg0)
             {
-                // create Intent to take a picture and return control to the calling application
+                /*// create Intent to take a picture and return control to the calling application
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 // start the image capture Intent
-                startActivityForResult(intent, 0);
+                startActivityForResult(intent, 0);*/
+
+                PackageManager pm = getPackageManager();
+                if (pm.hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+                    Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    i.putExtra(MediaStore.EXTRA_OUTPUT, MyFileContentProvider.CONTENT_URI);
+                    startActivityForResult(i, CAMERA_RESULT);
+                } else {
+                    Toast.makeText(getBaseContext(), "Camera is not available", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -92,9 +110,10 @@ public class Activity7 extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        super.onActivityResult(requestCode, resultCode, data);
+        /*super.onActivityResult(requestCode, resultCode, data);
         Bitmap bp = (Bitmap) data.getExtras().get("data");
-        // - - - Codifica a Base64
+        imgFavorite.setImageBitmap(bp);*/
+       /* // - - - Codifica a Base64
         ByteArrayOutputStream arrayByte = new ByteArrayOutputStream();
         bp.compress(Bitmap.CompressFormat.PNG, 100, arrayByte);
         //byte[] byteArray = arrayByte.toByteArray();
@@ -102,7 +121,98 @@ public class Activity7 extends Activity {
         results.setText(encoded);
         // - - - Decodiica a bitmap y muestra en Imageview
         byte[] imageAsBytes = Base64.decode(encoded.getBytes(),Base64.DEFAULT);
-        imgFavorite.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+        imgFavorite.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));*/
+
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i(Tag, "Receive the camera result");
+        if (resultCode == RESULT_OK && requestCode == CAMERA_RESULT) {
+            File out = new File(getFilesDir(), "newImage.jpg");
+            if(!out.exists()) {
+                Toast.makeText(getBaseContext(),
+                        "Error while capturing image", Toast.LENGTH_LONG)
+                        .show();
+                return;
+            }
+            // Cambia la prosicion de la imagen segun la posicion actual (getImageOrientation())
+            Bitmap mBitmap = BitmapFactory.decodeFile(out.getAbsolutePath());
+            Matrix matrix = new Matrix();
+            matrix.postRotate(getImageOrientation(out.getAbsolutePath()));
+            Bitmap rotatedBitmap = resizeBitmap(Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(),
+                    mBitmap.getHeight(), matrix, true),500);
+            //Asigna la imagen rotada al ImageView
+            //imgFavorite.setImageBitmap(rotatedBitmap);
+
+            // - - - Codifica a Base64
+            ByteArrayOutputStream arrayByte = new ByteArrayOutputStream();
+            rotatedBitmap.compress(Bitmap.CompressFormat.PNG, 100, arrayByte);
+            //byte[] byteArray = arrayByte.toByteArray();
+            String encoded = Base64.encodeToString(arrayByte.toByteArray(), Base64.DEFAULT);
+            results.setText(encoded);
+            // - - - Decodiica a bitmap y muestra en Imageview
+            byte[] imageAsBytes = Base64.decode(encoded.getBytes(),Base64.DEFAULT);
+            imgFavorite.setImageBitmap(BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length));
+        }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        imgFavorite = null;
+    }
+    public static int getImageOrientation(String imagePath){
+        int rotate = 0;
+        try {
+
+            File imageFile = new File(imagePath);
+            ExifInterface exif = new ExifInterface(
+                    imageFile.getAbsolutePath());
+            int orientation = exif.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL);
+
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    rotate = 270;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    rotate = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    rotate = 90;
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return rotate;
     }
 
+    private Bitmap resizeBitmap(Bitmap bitmap, int maxWidthHeight) {
+        int[] widthHeight = getWidthHeight(bitmap.getWidth(), bitmap.getHeight(), maxWidthHeight);
+
+        bitmap = Bitmap.createScaledBitmap(bitmap, widthHeight[0], widthHeight[1], true);
+
+        return bitmap;
+    }
+
+    private int[] getWidthHeight(int width, int height, int maxWidthHeight) {
+        int[] result = new int[2];
+        float ratio;
+
+        if (width > height) {
+            ratio = (float) width/height;
+            result[0] = maxWidthHeight;
+            result[1] = Math.round(maxWidthHeight / ratio);
+        }
+        else if (width < height) {
+            ratio = (float) height/width;
+            result[0] = Math.round(maxWidthHeight / ratio);
+            result[1] = maxWidthHeight;
+        }
+        else {
+            result[0] = maxWidthHeight;
+            result[1] = maxWidthHeight;
+        }
+
+        return result;
+    }
 }
