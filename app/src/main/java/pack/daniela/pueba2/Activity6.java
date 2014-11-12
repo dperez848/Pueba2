@@ -104,7 +104,7 @@ public class Activity6 extends Activity {
             public void onItemClick(AdapterView parent, View view,
                                     int position, long id) {
                 if (position == 1) {
-                    Intent intent = new Intent(Activity6.this, Activity7.class);
+                    Intent intent = new Intent(Activity6.this, MiTareaAsincrona.class);
                     startActivity(intent);
                 } else {
                     Intent intent = new Intent(Activity6.this, Activity8.class);

@@ -52,6 +52,10 @@
             android:name="pack.daniela.pueba2.Activity8"
             android:label="@string/title_activity_activity8" >
         </activity>
+        <activity
+            android:name="pack.daniela.pueba2.MiTareaAsincrona"
+            android:label="@string/title_activity_activity7" >
+        </activity>
         <provider
             android:name=".MyFileContentProvider"
             android:authorities="com.example.camerademo"
